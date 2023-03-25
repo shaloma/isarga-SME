@@ -33,6 +33,17 @@
       <option value="1.9">Extra activo (ejercicio muy intenso, trabajo físico o entrenamiento dos veces al día)</option>
     </select>
     <br>
+    <!-- Add sliders for nutrient distribution -->
+    <h3>Distribución de nutrientes</h3>
+    <label for="carbs">Carbohidratos (%): <span id="carbs-value">50</span></label>
+    <input type="range" id="carbs" name="carbs" min="0" max="100" value="50" step="1">
+    <br>
+    <label for="proteins">Proteínas (%): <span id="proteins-value">30</span></label>
+    <input type="range" id="proteins" name="proteins" min="0" max="100" value="30" step="1">
+    <br>
+    <label for="lipids">Lípidos (%): <span id="lipids-value">20</span></label>
+    <input type="range" id="lipids" name="lipids" min="0" max="100" value="20" step="1">
+    <br>
     <button type="submit">Calcular</button>
   </form>
   <div id="result"></div>
