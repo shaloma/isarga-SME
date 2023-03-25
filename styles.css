@@ -1,40 +1,46 @@
 body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: auto;
-    padding: 1rem;
-  }
-  
-  form {
-    display: grid;
-    gap: 1rem;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  button {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #result {
-    margin-top: 2rem;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: auto;
+  padding: 1rem;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+button {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#result {
+  margin-top: 2rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 800px) {
   .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
+      width: 100%;
+      padding: 0 1rem;
   }
-  
+}
