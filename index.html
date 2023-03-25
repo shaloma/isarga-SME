@@ -7,8 +7,9 @@
   <title>Calculadora de BMR y SME</title>
 </head>
 <body>
-  <h1>Calculadora de Tasa Metabólica Basal y Sistema Mexicano de Equivalentes</h1>
-  <form id="bmr-form">
+  <div class="container">
+    <h1>Calculadora de Tasa Metabólica Basal y Sistema Mexicano de Equivalentes</h1>
+    <form id="bmr-form">
     <label for="age">Edad:</label>
     <input type="number" id="age" name="age" min="1" required>
     <br>
@@ -35,6 +36,7 @@
     <button type="submit">Calcular</button>
   </form>
   <div id="result"></div>
-  <script src="script.js"></script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>

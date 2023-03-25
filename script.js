@@ -32,3 +32,9 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
 
   document.getElementById("result").innerHTML = result;
 });
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
