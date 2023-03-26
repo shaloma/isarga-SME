@@ -7,6 +7,10 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   const gender = document.getElementById("gender").value;
   const activityLevel = parseFloat(document.getElementById("activity-level").value);
 
+  const neck = parseFloat(document.getElementById("neck").value);
+  const waist = parseFloat(document.getElementById("waist").value);
+  const hips = gender === "female" ? parseFloat(document.getElementById("hips").value) : 0;
+
   let bmr;
   if (gender === "male") {
     bmr = 10 * weight + 6.25 * height - 5 * age + 5;
@@ -17,61 +21,80 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   const tef = bmr * 0.1;
   const tdee = bmr * activityLevel + tef;
 
+  // Calculate BMI
+  const heightInMeters = height / 100;
+  const bmi = weight / (heightInMeters * heightInMeters);
+
+  // Calculate body fat percentage
+  const bodyFatPercentage = calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hips);
+
+  // Determine ACE classification
+  const aceClassification = getACEClassification(gender, bodyFatPercentage);
+
   const result = `
     <h2>Tu Tasa Metabólica Basal (BMR) es: ${bmr.toFixed(2)} kcal/día</h2>
     <h2>Tu Gasto Energético Total Diario (TDEE) es: ${tdee.toFixed(2)} kcal/día</h2>
-    <p>Con base en el SME, se recomienda consumir:</p>
-    <ul>
-      <li>${(tdee * 0.55 / 4).toFixed(1)} equivalentes de cereales y tubérculos</li>
-      <li>${(tdee * 0.15 / 4).toFixed(1)} equivalentes de frutas</li>
-      <li>${(tdee * 0.10 / 4).toFixed(1)} equivalentes de leguminosas</li>
-      <li>${(tdee * 0.10 / 4).toFixed(1)} equivalentes de alimentos de origen animal</li>
-      <li>${(tdee * 0.10 / 9).toFixed(1)} equivalentes de grasas</li>
-    </ul>
+    <h2>Tu Índice de Masa Corporal (IMC) es: ${bmi.toFixed(1)}</h2>
+    <h2>Tu porcentaje de grasa corporal es: ${bodyFatPercentage.toFixed(1)}% - ${aceClassification}</h2>
   `;
+  
+  // Update the slider value and position
+  rangeSlider.value = bodyFatPercentage;
+  showSliderValue();
 
   document.getElementById("result").innerHTML = result;
 });
 
-// Function to update slider values and maintain 100% total
-function updateSlider(slider, valueElement) {
-  valueElement.textContent = slider.value;
+function calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hips) {
+  let bodyFatPercentage;
+  if (gender === "male") {
+    bodyFatPercentage = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+  } else {
+    bodyFatPercentage = 495 / (1.29579 - 0.35004 * Math.log10(waist + hips - neck) + 0.22100 * Math.log10(height)) - 450;
+  }
+  return bodyFatPercentage;
+}
 
-  const carbsSlider = document.getElementById("carbs");
-  const proteinsSlider = document.getElementById("proteins");
-  const lipidsSlider = document.getElementById("lipids");
+function getACEClassification(gender, bodyFatPercentage) {
+  const maleCategories = [
+    { min: 2, max: 5, label: "Grasa esencial" },
+    { min: 6, max: 13, label: "Atletas" },
+    { min: 14, max: 17, label: "En forma" },
+    { min: 18, max: 24, label: "Promedio" },
+    { min: 25, label: "Obeso" },
+  ];
 
-  const carbsValue = parseFloat(carbsSlider.value);
-  const proteinsValue = parseFloat(proteinsSlider.value);
-  const lipidsValue = parseFloat(lipidsSlider.value);
+  const femaleCategories = [
+    { min: 10, max: 13, label: "Grasa esencial" },
+    { min: 14, max: 20, label: "Atletas" },
+    { min: 21, max: 24, label: "En forma" },
+    { min: 25, max: 31, label: "Promedio" },
+    { min: 32, label: "Obeso" },
+  ];
 
-  const total = carbsValue + proteinsValue + lipidsValue;
-  const diff = total - 100;
+  const categories = gender === "male" ? maleCategories : femaleCategories;
 
-  if (diff !== 0) {
-    const otherSliders = [
-      { id: "carbs", slider: carbsSlider, value: carbsValue },
-      { id: "proteins", slider: proteinsSlider, value: proteinsValue },
-      { id: "lipids", slider: lipidsSlider, value: lipidsValue },
-    ].filter(s => s.id !== slider.id);
+  for (const category of categories) {
+    if (bodyFatPercentage >= category.min && (category.max === undefined || bodyFatPercentage <= category.max)) {
+      return category.label;
+    }
+  }
 
-    const totalOtherSliders = otherSliders[0].value + otherSliders[1].value;
-    otherSliders.forEach(s => {
-      const adjustedValue = s.value - (s.value / totalOtherSliders) * diff;
-      s.slider.value = adjustedValue;
-      document.getElementById(s.id + "-value").textContent = adjustedValue.toFixed(0);
-      });
-      }
-      }
-      
-  document.getElementById("carbs").addEventListener("input", function () {
-  updateSlider(this, document.getElementById("carbs-value"));
-  });
-  
-  document.getElementById("proteins").addEventListener("input", function () {
-  updateSlider(this, document.getElementById("proteins-value"));
-  });
-  
-  document.getElementById("lipids").addEventListener("input", function () {
-  updateSlider(this, document.getElementById("lipids-value"));
-  });
+  return "Indeterminado";
+}
+
+var rangeSlider = document.getElementById("bf-range-line");
+var rangeBullet = document.getElementById("bf-range-bullet");
+
+rangeSlider.addEventListener("input", showSliderValue, false);
+
+function showSliderValue() {
+  const sliderValue = rangeSlider.value;
+  rangeBullet.innerHTML = sliderValue + "%";
+  const bulletPosition = (rangeSlider.value / rangeSlider.max) * 100;
+  rangeBullet.style.left = (bulletPosition - 8) + "%";
+}
+
+rangeSlider.addEventListener("input", showSliderValue);
+showSliderValue();
+

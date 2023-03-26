@@ -1,53 +1,72 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de TDEE y SME</title>
   <link rel="stylesheet" href="styles.css">
-  <title>Calculadora de BMR y SME</title>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Calculadora de Tasa Metabólica Basal y Sistema Mexicano de Equivalentes V03</h1>
-    <form id="bmr-form">
-    <label for="age">Edad:</label>
-    <input type="number" id="age" name="age" min="1" required>
-    <br>
+  <h1>Calculadora de TDEE y Recomendaciones del SME</h1>
+  <form id="bmr-form">
+    <label for="age">Edad (años):</label>
+    <input type="number" id="age" min="1" max="120" step="1" required>
+    <span class="error-message" title="Por favor, ingrese su edad en años."></span>
+
     <label for="height">Altura (cm):</label>
-    <input type="number" id="height" name="height" min="1" required>
-    <br>
+    <input type="number" id="height" min="50" max="300" step="1" required>
+    <span class="error-message" title="Por favor, ingrese su altura en centímetros."></span>
+
     <label for="weight">Peso (kg):</label>
-    <input type="number" id="weight" name="weight" min="1" required>
-    <br>
+    <input type="number" id="weight" min="1" max="400" step="0.1" required>
+    <span class="error-message" title="Por favor, ingrese su peso en kilogramos."></span>
+
     <label for="gender">Género:</label>
-    <select id="gender" name="gender" required>
-      <option value="male">Masculino</option>
-      <option value="female">Femenino</option>
+    <select id="gender" required>
+      <option value="" disabled selected>Selecciona tu género</option>
+      <option value="male">Hombre</option>
+      <option value="female">Mujer</option>
     </select>
-    <label for="activity-level">Nivel de actividad:</label>
-    <select id="activity-level" name="activity-level" required>
+    <span class="error-message" title="Por favor, seleccione su género."></span>
+
+    <label for="neck">Cuello (cm):</label>
+    <input type="number" id="neck" min="1" max="100" step="0.1" required>
+    <span class="error-message" title="Por favor, ingrese la medida de su cuello en centímetros."></span>
+
+    <label for="waist">Cintura (cm):</label>
+    <input type="number" id="waist" min="1" max="200" step="0.1" required>
+    <span class="error-message" title="Por favor, ingrese la medida de su cintura en centímetros."></span>
+
+    <label for="hip">Cadera (cm):</label>
+    <input type="number" id="hip" min="1" max="200" step="0.1" required>
+    <span class="error-message" title="Por favor, ingrese la medida de su cadera en centímetros."></span>
+
+    <label for="activity-level">Nivel de actividad física:</label>
+    <select id="activity-level" required>
+      <option value="" disabled selected>Selecciona tu nivel de actividad</option>
       <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
-      <option value="1.375">Ligeramente activo (ejercicio ligero o deportes 1-3 días a la semana)</option>
-      <option value="1.55">Moderadamente activo (ejercicio moderado o deportes 3-5 días a la semana)</option>
-      <option value="1.725">Muy activo (ejercicio intenso o deportes 6-7 días a la semana)</option>
-      <option value="1.9">Extra activo (ejercicio muy intenso, trabajo físico o entrenamiento dos veces al día)</option>
-    </select>
-    <br>
-    <!-- Add sliders for nutrient distribution -->
-    <h3>Distribución de nutrientes</h3>
-    <label for="carbs">Carbohidratos (%): <span id="carbs-value">50</span></label>
-    <input type="range" id="carbs" name="carbs" min="0" max="100" value="50" step="1">
-    <br>
-    <label for="proteins">Proteínas (%): <span id="proteins-value">30</span></label>
-    <input type="range" id="proteins" name="proteins" min="0" max="100" value="30" step="1">
-    <br>
-    <label for="lipids">Lípidos (%): <span id="lipids-value">20</span></label>
-    <input type="range" id="lipids" name="lipids" min="0" max="100" value="20" step="1">
-    <br>
-    <button type="submit">Calcular</button>
-  </form>
-  <div id="result"></div>
-</div>
-<script src="script.js"></script>
-</body>
+      <option value="1.375">Ligero (ejercicio ligero o deportes 1-3 días a la semana)</option>
+      <option value="1.55">Moderado (ejercicio moderado o deportes 3-5 días a la semana)</option>
+      <option value="1.725">Activo (ejercicio intenso o deportes 6-7 días a la semana)</option>
+      <option value="1.9">Muy activo (trabajo físico o entrenamiento 2 veces al día)</option>
+      </select>
+      <span class="error-message" title="Por favor, seleccione su nivel de actividad física."></span>
+
+      <button type="submit">Calcular</button>
+
+    </form>
+    <div id="result"></div>
+    <div class="container">
+      <div class="range-slider">
+        <span id="bf-range-bullet" class="rs-label">0%</span>
+        <input id="bf-range-line" class="rs-range" type="range" value="0" min="2" max="50">
+      </div>
+      <div class="box-minmax">
+        <span>2%</span><span>50%</span>
+      </div>
+    </div>  
+    <script src="script.js"></script>
+  </body>
 </html>
