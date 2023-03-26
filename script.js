@@ -25,6 +25,9 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   const heightInMeters = height / 100;
   const bmi = weight / (heightInMeters * heightInMeters);
 
+  // Get BMI interpretation
+  const bmiInterpretation = getBMIInterpretation(bmi);
+
   // Calculate body fat percentage
   const bodyFatPercentage = calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hips);
 
@@ -34,16 +37,32 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   const result = `
     <h2>Tu Tasa Metabólica Basal (BMR) es: ${bmr.toFixed(2)} kcal/día</h2>
     <h2>Tu Gasto Energético Total Diario (TDEE) es: ${tdee.toFixed(2)} kcal/día</h2>
-    <h2>Tu Índice de Masa Corporal (IMC) es: ${bmi.toFixed(1)}</h2>
+    <h2>Tu Índice de Masa Corporal (IMC) es: ${bmi.toFixed(1)} - ${bmiInterpretation}</h2>
     <h2>Tu porcentaje de grasa corporal es: ${bodyFatPercentage.toFixed(1)}% - ${aceClassification}</h2>
   `;
-  
+
   // Update the slider value and position
   rangeSlider.value = bodyFatPercentage;
   showSliderValue();
 
   document.getElementById("result").innerHTML = result;
 });
+
+function getBMIInterpretation(bmi) {
+  if (bmi < 18.5) {
+    return "Bajo peso";
+  } else if (bmi >= 18.5 && bmi <= 24.9) {
+    return "Peso normal";
+  } else if (bmi >= 25 && bmi <= 29.9) {
+    return "Sobrepeso";
+  } else if (bmi >= 30 && bmi <= 34.9) {
+    return "Obesidad (Clase 1)";
+  } else if (bmi >= 35 && bmi <= 39.9) {
+    return "Obesidad (Clase 2)";
+  } else {
+    return "Obesidad (Clase 3)";
+  }
+}
 
 function calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hips) {
   let bodyFatPercentage;
