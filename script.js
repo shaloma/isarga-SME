@@ -143,8 +143,6 @@ const labelColors = {
   obese: 'red',
 };
 
-rangeSlider.addEventListener("input", showSliderValue);
-
 function updateSlider(percentage) {
   const position = ((percentage - 2) / 33) * 100;
   circle.style.left = `calc(${position}% - 10px)`;
@@ -168,5 +166,3 @@ function setActiveLabel(activeLabel) {
     label.style.color =(key === activeLabel) ? activeColor : 'black';
 });
 }
-
-showSliderValue();

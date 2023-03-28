@@ -44,12 +44,28 @@ button:hover {
   box-sizing: border-box;
 }
 
-@media (max-width: 800px) {
-  .container {
-    width: 100%;
-    padding: 0 1rem;
+@media (max-width: 480px) {
+  .label {
+    font-size: 0.8rem; /* Adjust this value according to your preference */
+  }
+
+  #essential-fat {
+    left: 0%;
+  }
+
+  #athlete {
+    left: calc(24% - 25px);
+  }
+
+  #in-shape {
+    left: calc(54.5% - 30px);
+  }
+
+  #obese {
+    right: 0%;
   }
 }
+
 
 .slider {
   width: 100%;
