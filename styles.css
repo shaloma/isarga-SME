@@ -99,7 +99,7 @@ button:hover {
   font-size: 14px;
   color: #fff;
   background: #007bff;
-  display: inline-block;
+  display: block;
   border-radius: 50%;
   padding: 4px 8px;
   text-align: center;

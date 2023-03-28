@@ -1,6 +1,7 @@
 document.getElementById("bmr-form").addEventListener("submit", function (event) {
   event.preventDefault();
 
+  //Defining constants to make the calculation. Info gathered from the html inputs
   const age = parseInt(document.getElementById("age").value);
   const height = parseInt(document.getElementById("height").value);
   const weight = parseInt(document.getElementById("weight").value);
@@ -9,8 +10,9 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
 
   const neck = parseFloat(document.getElementById("neck").value);
   const waist = parseFloat(document.getElementById("waist").value);
-  const hips = gender === "female" ? parseFloat(document.getElementById("hips").value) : 0;
+  const hips = gender === "female" ? parseFloat(document.getElementById("hip").value) : 0;
 
+  //Calculate Basal Metabolic Rate BMR
   let bmr;
   if (gender === "male") {
     bmr = 10 * weight + 6.25 * height - 5 * age + 5;
@@ -18,6 +20,7 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
     bmr = 10 * weight + 6.25 * height - 5 * age - 161;
   }
 
+  //Taking into account the themic effect of food (10%) and activity level, suming them to the BMR, this gives the Toatal Daily Energy Expenditure TDEE
   const tef = bmr * 0.1;
   const tdee = bmr * activityLevel + tef;
 
@@ -33,7 +36,8 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
 
   // Determine ACE classification
   const aceClassification = getACEClassification(gender, bodyFatPercentage);
-
+  
+  //Write your results
   const result = `
     <h2>Tu Tasa Metabólica Basal (BMR) es: ${bmr.toFixed(2)} kcal/día</h2>
     <h2>Tu Gasto Energético Total Diario (TDEE) es: ${tdee.toFixed(2)} kcal/día</h2>
@@ -48,6 +52,7 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   document.getElementById("result").innerHTML = result;
 });
 
+//Funtion used in the "Wite your results" part to interpret what every percetnage of BMI means
 function getBMIInterpretation(bmi) {
   if (bmi < 18.5) {
     return "Bajo peso";
@@ -64,6 +69,25 @@ function getBMIInterpretation(bmi) {
   }
 }
 
+// Will show or hide the hip measurement input and label depending on the selected gender
+function toggleHipInput() {
+  const gender = document.getElementById("gender").value;
+  const hipLabel = document.getElementById("hip-label");
+  const hipInput = document.getElementById("hip");
+  
+  if (gender === "female") {
+    hipLabel.style.display = "block";
+    hipInput.style.display = "block";
+    hipInput.required = true;
+  } else {
+    hipLabel.style.display = "none";
+    hipInput.style.display = "none";
+    hipInput.required = false;
+  }
+}
+
+
+//Funtion to calculate Body fat percentage yaking into account gender
 function calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hips) {
   let bodyFatPercentage;
   if (gender === "male") {
@@ -74,6 +98,7 @@ function calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hi
   return bodyFatPercentage;
 }
 
+//Interpretation of body fat percentage accodring to the ACE, first for men and then form women
 function getACEClassification(gender, bodyFatPercentage) {
   const maleCategories = [
     { min: 2, max: 5, label: "Grasa esencial" },
@@ -102,18 +127,17 @@ function getACEClassification(gender, bodyFatPercentage) {
   return "Indeterminado";
 }
 
-var rangeSlider = document.getElementById("bf-range-line");
-var rangeBullet = document.getElementById("bf-range-bullet");
+//This part of your JavaScript code is responsible for updating the position and display of the bullet (a small circular element) on the range slider, which represents the body fat percentage.
+const rangeSlider = document.getElementById("bf-range-line");
+const rangeBullet = document.getElementById("bf-range-bullet");
 
-rangeSlider.addEventListener("input", showSliderValue, false);
+rangeSlider.addEventListener("input", showSliderValue);
 
 function showSliderValue() {
   const sliderValue = rangeSlider.value;
   rangeBullet.innerHTML = sliderValue + "%";
-  const bulletPosition = (rangeSlider.value / rangeSlider.max) * 100;
+  const bulletPosition = (sliderValue / rangeSlider.max) * 100;
   rangeBullet.style.left = (bulletPosition - 8) + "%";
 }
 
-rangeSlider.addEventListener("input", showSliderValue);
 showSliderValue();
-

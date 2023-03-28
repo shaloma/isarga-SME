@@ -24,7 +24,7 @@
     <span class="error-message" title="Por favor, ingrese su peso en kilogramos."></span>
 
     <label for="gender">Género:</label>
-    <select id="gender" required>
+    <select id="gender" onchange="toggleHipInput()" required>
       <option value="" disabled selected>Selecciona tu género</option>
       <option value="male">Hombre</option>
       <option value="female">Mujer</option>
@@ -39,8 +39,8 @@
     <input type="number" id="waist" min="1" max="200" step="0.1" required>
     <span class="error-message" title="Por favor, ingrese la medida de su cintura en centímetros."></span>
 
-    <label for="hip">Cadera (cm):</label>
-    <input type="number" id="hip" min="1" max="200" step="0.1" required>
+    <label for="hip" id="hip-label">Cadera (cm):</label>
+    <input type="number" id="hip" min="1" max="200" step="0.1">
     <span class="error-message" title="Por favor, ingrese la medida de su cadera en centímetros."></span>
 
     <label for="activity-level">Nivel de actividad física:</label>
