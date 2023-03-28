@@ -104,7 +104,7 @@ function getACEClassification(gender, bodyFatPercentage) {
     { min: 6, max: 13, label: "Atletas" },
     { min: 14, max: 17, label: "En forma" },
     { min: 18, max: 24, label: "Promedio" },
-    { min: 25, label: "Obeso" },
+    { min: 25, label: "Obesidad" },
   ];
 
   const femaleCategories = [
@@ -112,7 +112,7 @@ function getACEClassification(gender, bodyFatPercentage) {
     { min: 14, max: 20, label: "Atletas" },
     { min: 21, max: 24, label: "En forma" },
     { min: 25, max: 31, label: "Promedio" },
-    { min: 32, label: "Obeso" },
+    { min: 32, label: "Obesidad" },
   ];
 
   const categories = gender === "male" ? maleCategories : femaleCategories;
