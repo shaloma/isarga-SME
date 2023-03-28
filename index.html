@@ -59,14 +59,15 @@
     </form>
     <div id="result"></div>
     <div class="container">
-      <div class="range-slider">
-        <span id="bf-range-bullet" class="rs-label">0%</span>
-        <input id="bf-range-line" class="rs-range" type="range" value="0" min="2" max="50">
+      <div class="slider">
+        <div class="circle" id="circle"></div>
       </div>
-      <div class="box-minmax">
-        <span>2%</span><span>50%</span>
-      </div>
-    </div>  
+      <div class="labels">
+        <span id="essential-fat" class="label" style="left: 1%;">Essential fat</span>
+        <span id="athlete" class="label" style="left: calc(24% - 27px);">Athlete</span>
+        <span id="in-shape" class="label" style="left: calc(54.5% - 35px);">In shape</span>
+        <span id="obese" class="label" style="right: 1%;">Obese</span>
+      </div> 
     <script src="script.js"></script>
   </body>
 </html>

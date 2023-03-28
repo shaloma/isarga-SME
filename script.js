@@ -46,8 +46,7 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   `;
 
   // Update the slider value and position
-  rangeSlider.value = bodyFatPercentage;
-  showSliderValue();
+  updateSlider(bodyFatPercentage);
 
   document.getElementById("result").innerHTML = result;
 });
@@ -128,16 +127,46 @@ function getACEClassification(gender, bodyFatPercentage) {
 }
 
 //This part of your JavaScript code is responsible for updating the position and display of the bullet (a small circular element) on the range slider, which represents the body fat percentage.
-const rangeSlider = document.getElementById("bf-range-line");
-const rangeBullet = document.getElementById("bf-range-bullet");
+const circle = document.getElementById('circle');
+const input = document.getElementById('input');
+const labels = {
+  essentialFat: document.getElementById('essential-fat'),
+  athlete: document.getElementById('athlete'),
+  inShape: document.getElementById('in-shape'),
+  obese: document.getElementById('obese'),
+};
+
+const labelColors = {
+  essentialFat: 'blue',
+  athlete: 'green',
+  inShape: 'orange',
+  obese: 'red',
+};
 
 rangeSlider.addEventListener("input", showSliderValue);
 
-function showSliderValue() {
-  const sliderValue = rangeSlider.value;
-  rangeBullet.innerHTML = sliderValue + "%";
-  const bulletPosition = (sliderValue / rangeSlider.max) * 100;
-  rangeBullet.style.left = (bulletPosition - 8) + "%";
+function updateSlider(percentage) {
+  const position = ((percentage - 2) / 33) * 100;
+  circle.style.left = `calc(${position}% - 10px)`;
+
+  if (percentage >= 2 && percentage <= 5) {
+    setActiveLabel('essentialFat');
+  } else if (percentage >= 6 && percentage <= 13) {
+    setActiveLabel('athlete');
+  } else if (percentage >= 14 && percentage <= 24) {
+    setActiveLabel('inShape');
+  } else {
+    setActiveLabel('obese');
+  }
+}
+
+function setActiveLabel(activeLabel) {
+  const activeColor = labelColors[activeLabel];
+  circle.style.borderColor = activeColor;
+
+  Object.entries(labels).forEach(([key, label]) => {
+    label.style.color =(key === activeLabel) ? activeColor : 'black';
+});
 }
 
 showSliderValue();
