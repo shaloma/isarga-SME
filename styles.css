@@ -43,6 +43,7 @@ button:hover {
   box-sizing: border-box;
 }
 
+/*Change way to display things depending on screen. The font changes work. The label positions DON'T work*/
 @media (max-width: 480px) {
   .label {
     font-size: 0.8rem; /* Adjust this value according to your preference */
@@ -65,7 +66,7 @@ button:hover {
   }
 }
 
-
+/*Slider style*/
 .slider {
   width: 100%;
   height: 6px;
