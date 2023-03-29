@@ -100,18 +100,18 @@ function calculateBodyFatPercentage(gender, weight, height, age, neck, waist, hi
 //Interpretation of body fat percentage accodring to the ACE, first for men and then form women
 function getACEClassification(gender, bodyFatPercentage) {
   const maleCategories = [
-    { min: 2, max: 5, label: "Grasa esencial" },
-    { min: 6, max: 13, label: "Atletas" },
-    { min: 14, max: 17, label: "En forma" },
-    { min: 18, max: 24, label: "Promedio" },
+    { min: 2, max: 5.99, label: "Grasa esencial" },
+    { min: 6, max: 13.99, label: "Atletas" },
+    { min: 14, max: 17.99, label: "En forma" },
+    { min: 18, max: 24.99, label: "Promedio" },
     { min: 25, label: "Obesidad" },
   ];
 
   const femaleCategories = [
-    { min: 10, max: 13, label: "Grasa esencial" },
-    { min: 14, max: 20, label: "Atletas" },
-    { min: 21, max: 24, label: "En forma" },
-    { min: 25, max: 31, label: "Promedio" },
+    { min: 10, max: 13.99, label: "Grasa esencial" },
+    { min: 14, max: 20.99, label: "Atletas" },
+    { min: 21, max: 24.99, label: "En forma" },
+    { min: 25, max: 31.99, label: "Promedio" },
     { min: 32, label: "Obesidad" },
   ];
 
@@ -127,6 +127,10 @@ function getACEClassification(gender, bodyFatPercentage) {
 }
 
 //This part of your JavaScript code is responsible for updating the position and display of the bullet (a small circular element) on the range slider, which represents the body fat percentage.
+const MIN_PERCENTAGE = 2;
+const MAX_PERCENTAGE = 35;
+const SLIDER_LENGTH = 100; // This is the percentage length of the slider, you can adjust this value.
+
 const circle = document.getElementById('circle');
 const input = document.getElementById('input');
 const labels = {
@@ -144,14 +148,15 @@ const labelColors = {
 };
 
 function updateSlider(percentage) {
-  const position = ((percentage - 2) / 33) * 100;
-  circle.style.left = `calc(${position}% - 10px)`;
+  const position = ((percentage - MIN_PERCENTAGE) / (MAX_PERCENTAGE - MIN_PERCENTAGE)) * SLIDER_LENGTH;
+  const limitedPosition = Math.min(position, SLIDER_LENGTH);
+  circle.style.left = `calc(${limitedPosition}% - 10px)`;
 
-  if (percentage >= 2 && percentage <= 5) {
+  if (percentage >= 2 && percentage <= 5.99) {
     setActiveLabel('essentialFat');
-  } else if (percentage >= 6 && percentage <= 13) {
+  } else if (percentage >= 6 && percentage <= 13.99) {
     setActiveLabel('athlete');
-  } else if (percentage >= 14 && percentage <= 24) {
+  } else if (percentage >= 14 && percentage <= 24.99) {
     setActiveLabel('inShape');
   } else {
     setActiveLabel('obese');
