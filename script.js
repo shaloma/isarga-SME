@@ -46,7 +46,7 @@ document.getElementById("bmr-form").addEventListener("submit", function (event) 
   `;
 
   // Update the slider value and position
-  updateSlider(bodyFatPercentage);
+  updateSlider(bodyFatPercentage, gender);
 
   document.getElementById("result").innerHTML = result;
 });
@@ -73,6 +73,8 @@ function toggleHipInput() {
   const gender = document.getElementById("gender").value;
   const hipLabel = document.getElementById("hip-label");
   const hipInput = document.getElementById("hip");
+
+  updateSliderBackground(gender);
   
   if (gender === "female") {
     hipLabel.style.display = "block";
@@ -127,6 +129,13 @@ function getACEClassification(gender, bodyFatPercentage) {
 }
 
 //This part of your JavaScript code is responsible for updating the position and display of the bullet (a small circular element) on the range slider, which represents the body fat percentage.
+//Different slider zones for each gender
+const sliderBackgroundColors = {
+  male: "linear-gradient(90deg, blue 12%, green 12%, green 36.5%, orange 36.5%, orange 70%, red 70%)",
+  female: "linear-gradient(90deg, blue 37%, green 37%, green 56.5%, orange 56.5%, orange 90%, red 90%)",
+};
+
+
 const MIN_PERCENTAGE = 2;
 const MAX_PERCENTAGE = 35;
 const SLIDER_LENGTH = 100; // This is the percentage length of the slider, you can adjust this value.
@@ -147,20 +156,47 @@ const labelColors = {
   obese: 'red',
 };
 
-function updateSlider(percentage) {
+function updateSlider(percentage, gender) {
+  const circle = document.querySelector(".circle");
+
+  let activeLabel;
+
+  if (gender === "male") {
+    if (percentage >= 2 && percentage <= 5.99) {
+      activeLabel = 'essentialFat';
+    } else if (percentage >= 6 && percentage <= 13.99) {
+      activeLabel = 'athlete';
+    } else if (percentage >= 14 && percentage <= 24.99) {
+      activeLabel = 'inShape';
+    } else {
+      activeLabel = 'obese';
+    }
+  } else {
+    if (percentage >= 10 && percentage <= 13.99) {
+      activeLabel = 'essentialFat';
+    } else if (percentage >= 14 && percentage <= 20.99) {
+      activeLabel = 'athlete';
+    } else if (percentage >= 21 && percentage <= 31.99) {
+      activeLabel = 'inShape';
+    } else {
+      activeLabel = 'obese';
+    }
+  }
+
+  setActiveLabel(activeLabel);
+
+  // Add this line to update the slider background color
+  updateSliderBackground(gender);
+
+  // Update the slider circle position
   const position = ((percentage - MIN_PERCENTAGE) / (MAX_PERCENTAGE - MIN_PERCENTAGE)) * SLIDER_LENGTH;
   const limitedPosition = Math.min(position, SLIDER_LENGTH);
   circle.style.left = `calc(${limitedPosition}% - 10px)`;
+}
 
-  if (percentage >= 2 && percentage <= 5.99) {
-    setActiveLabel('essentialFat');
-  } else if (percentage >= 6 && percentage <= 13.99) {
-    setActiveLabel('athlete');
-  } else if (percentage >= 14 && percentage <= 24.99) {
-    setActiveLabel('inShape');
-  } else {
-    setActiveLabel('obese');
-  }
+function updateSliderBackground(gender) {
+  const slider = document.querySelector(".slider");
+  slider.style.background = sliderBackgroundColors[gender];
 }
 
 function setActiveLabel(activeLabel) {
@@ -171,3 +207,5 @@ function setActiveLabel(activeLabel) {
     label.style.color =(key === activeLabel) ? activeColor : 'black';
 });
 }
+
+updateSliderBackground(document.getElementById("gender").value);
