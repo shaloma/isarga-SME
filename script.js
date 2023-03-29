@@ -74,8 +74,6 @@ function toggleHipInput() {
   const hipLabel = document.getElementById("hip-label");
   const hipInput = document.getElementById("hip");
 
-  updateSliderBackground(gender);
-  
   if (gender === "female") {
     hipLabel.style.display = "block";
     hipInput.style.display = "block";
@@ -85,6 +83,8 @@ function toggleHipInput() {
     hipInput.style.display = "none";
     hipInput.required = false;
   }
+
+  updateSliderBackground(gender);
 }
 
 
@@ -132,12 +132,20 @@ function getACEClassification(gender, bodyFatPercentage) {
 //Different slider zones for each gender
 const sliderBackgroundColors = {
   male: "linear-gradient(90deg, blue 12%, green 12%, green 36.5%, orange 36.5%, orange 70%, red 70%)",
-  female: "linear-gradient(90deg, blue 37%, green 37%, green 56.5%, orange 56.5%, orange 90%, red 90%)",
+  female: "linear-gradient(90deg, blue 12%, green 12%, green 35%, orange 35%, orange 69%, red 69%)",
 };
 
-
-const MIN_PERCENTAGE = 2;
-const MAX_PERCENTAGE = 35;
+//Changing the where the slider starts and end dynamically depending on gender.
+const minMaxPercentages = {
+  male: {
+    min: 2,
+    max: 35
+  },
+  female: {
+    min: 10,
+    max: 42
+  }
+};
 const SLIDER_LENGTH = 100; // This is the percentage length of the slider, you can adjust this value.
 
 const circle = document.getElementById('circle');
@@ -185,11 +193,14 @@ function updateSlider(percentage, gender) {
 
   setActiveLabel(activeLabel);
 
-  // Add this line to update the slider background color
+  // Add this line to update the slider color zones ranges
   updateSliderBackground(gender);
 
+  //Changing where the slider starts and ends depending on gender.
+  const minPercentage = minMaxPercentages[gender].min;
+  const maxPercentage = minMaxPercentages[gender].max;
   // Update the slider circle position
-  const position = ((percentage - MIN_PERCENTAGE) / (MAX_PERCENTAGE - MIN_PERCENTAGE)) * SLIDER_LENGTH;
+  const position = ((percentage - minPercentage) / (maxPercentage - minPercentage)) * SLIDER_LENGTH;
   const limitedPosition = Math.min(position, SLIDER_LENGTH);
   circle.style.left = `calc(${limitedPosition}% - 10px)`;
 }
